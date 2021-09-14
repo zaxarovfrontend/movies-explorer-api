@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        return validator.isURL(value, {require_protocol: true});
+        return validator.isURL(value, { require_protocol: true });
       },
       message: 'Ссылка некоректная',
     },
@@ -37,7 +37,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        return validator.isURL(value, {require_protocol: true});
+        return validator.isURL(value, { require_protocol: true });
       },
       message: 'Ссылка некоректная',
     },
@@ -47,7 +47,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(value) {
-        return validator.isURL(value, {require_protocol: true});
+        return validator.isURL(value, { require_protocol: true });
       },
       message: 'Ссылка некоректная',
     },
@@ -58,9 +58,8 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
-    ref: 'user',
   },
   nameRU: {
     type: String,
@@ -71,9 +70,6 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
 
-})
+});
 
-  module.exports = mongoose.model('movie', movieSchema);
-
-
-
+module.exports = mongoose.model('movie', movieSchema);

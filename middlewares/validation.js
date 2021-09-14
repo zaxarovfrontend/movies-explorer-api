@@ -1,5 +1,14 @@
-const {celebrate, Joi} = require('celebrate');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { celebrate, Joi } = require('celebrate');
+const validator = require('validator');
 
+const isURL = (v) => {
+  const result = validator.isURL(v, { require_protocol: true });
+  if (result) {
+    return v;
+  }
+  throw new Error('Неверный формат ссылки.');
+};
 
 const createUserValidate = celebrate({
   body: Joi.object().keys({
@@ -23,8 +32,32 @@ const loginValidate = celebrate({
   }),
 });
 
+const MovieValidation = celebrate({
+  body: Joi.object().keys({
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.string().required().custom(isURL),
+    trailer: Joi.string().required().custom(isURL),
+    thumbnail: Joi.string().required().custom(isURL),
+    movieId: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
+  }),
+});
+
+const MovieIdValidation = celebrate({
+  params: Joi.object().keys({
+    movieId: Joi.string().hex().length(24),
+  }),
+});
+
 module.exports = {
   userValidate,
   createUserValidate,
   loginValidate,
+  MovieValidation,
+  MovieIdValidation
 };

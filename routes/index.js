@@ -1,8 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const usersRoute = require('./user')
-const movieRoute = require('./movie')
+const usersRoute = require('./user');
+const movieRoute = require('./movie');
 const { login, createUser } = require('../controllers/user');
 
 const {
