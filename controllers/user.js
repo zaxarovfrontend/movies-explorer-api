@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
-const ConflictError = require("../errors/conflict-error");
-const ServerError = require("../errors/server-error");
+const ConflictError = require('../errors/conflict-error');
+const ServerError = require('../errors/server-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -13,14 +13,14 @@ const getUserFile = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => next(new NotFoundError('пользователь с указанным id не найден')))
     .then((user) => {
-      res.status(200).send(user)
-    })
-}
+      res.status(200).send(user);
+    });
+};
 
 const getUserProfileUpdate = (req, res, next) => {
   const userId = req.user._id;
-  const {name, email} = req.body;
-  User.findByIdAndUpdate(userId,{name, email}, {new: true, runValidators: true})
+  const { name, email } = req.body;
+  User.findByIdAndUpdate(userId, { name, email }, { new: true, runValidators: true })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -32,7 +32,6 @@ const getUserProfileUpdate = (req, res, next) => {
       }
     });
 };
-
 
 const createUser = (req, res, next) => {
   const {
@@ -49,13 +48,13 @@ const createUser = (req, res, next) => {
       res.send({
         name: user.name,
         email: user.email,
-        password: user.password
+        password: user.password,
       });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Некорректно введенные данные в поле'));
-      } else if (err.name === 'MongoError' && err.code === 11000) {
+      } else if (err.code === 11000) {
         next(new ConflictError('Указанный пользователь уже зарегистрирован'));
       } else {
         next(new ServerError('Ошибка на сервере'));
@@ -75,6 +74,6 @@ const login = (req, res, next) => {
     });
 };
 
-
-
-module.exports = {getUserFile, getUserProfileUpdate, createUser, login};
+module.exports = {
+  getUserFile, getUserProfileUpdate, createUser, login,
+};
