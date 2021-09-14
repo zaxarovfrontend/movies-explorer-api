@@ -4,6 +4,6 @@ const { userValidate } = require('../middlewares/validation');
 
 router.get('/users/me', getUserFile);
 
-router.patch('/users/me',userValidate, getUserProfileUpdate);
+router.patch('/users/me', userValidate, getUserProfileUpdate);
 
 module.exports = router;
