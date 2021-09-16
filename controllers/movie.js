@@ -1,7 +1,6 @@
 const Movie = require('../models/movie');
 const BadRequestError = require('../errors/bad-request-error');
 const ForbiddenError = require('../errors/forbidden-error');
-const NotFoundError = require('../errors/not-found-error');
 
 const getMovies = (req, res, next) => {
   Movie.find()
@@ -55,7 +54,6 @@ const deleteMovie = (req, res, next) => {
   const owner = req.user._id;
   const { movieId } = req.params;
   Movie.findById(movieId)
-    .orFail(() => next(new NotFoundError('Фильм с указанным id не найден')))
     .then((movie) => {
       if (owner.toString() === movie.owner.toString()) {
         return movie.remove()

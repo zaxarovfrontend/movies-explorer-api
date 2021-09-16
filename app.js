@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
@@ -23,16 +25,13 @@ app.use(cors());
 app.options('*', cors());
 
 app.use(requestLogger);
+app.use(limiter);
 app.use(helmet());
 app.use('/', express.json());
 app.use(router);
-app.use(limiter);
-
-require('dotenv').config();
-
-app.use(errorHandler);
 
 app.use(errorLogger);
 app.use(errors());
+app.use(errorHandler);
 
 app.listen(PORT);

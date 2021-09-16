@@ -25,7 +25,7 @@ const getUserProfileUpdate = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Некорректные данные'));
-      } else if (err.name === 'MongoError' && err.code === 11000) {
+      } else if (err.name === 'MongoServerError' && err.code === 11000) {
         next(new ConflictError(`Указанная почта ${email} уже зарегистрирована`));
       } else {
         next(new ServerError('Ошибка на сервере'));
@@ -48,13 +48,12 @@ const createUser = (req, res, next) => {
       res.send({
         name: user.name,
         email: user.email,
-        password: user.password,
       });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Некорректно введенные данные в поле'));
-      } else if (err.code === 11000) {
+        next(new BadRequestError('Некорректно введенны данные в поле'));
+      } if (err.code === 11000) {
         next(new ConflictError('Указанный пользователь уже зарегистрирован'));
       } else {
         next(new ServerError('Ошибка на сервере'));
