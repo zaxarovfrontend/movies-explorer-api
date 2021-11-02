@@ -10,6 +10,7 @@ const UnauthorizedError = require('../errors/unauthorized-error');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUserFile = (req, res, next) => {
+  console.log(req.user._id);
   User.findById(req.user._id)
     .orFail(() => next(new NotFoundError('пользователь с указанным id не найден')))
     .then((user) => {
@@ -18,6 +19,7 @@ const getUserFile = (req, res, next) => {
 };
 
 const getUserProfileUpdate = (req, res, next) => {
+  console.log(req.user._id);
   const userId = req.user._id;
   const { name, email } = req.body;
   User.findByIdAndUpdate(userId, { name, email }, { new: true, runValidators: true })
@@ -34,6 +36,7 @@ const getUserProfileUpdate = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
+  console.log(req.body);
   const {
     name, email, password,
   } = req.body;
@@ -62,6 +65,7 @@ const createUser = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
+  console.log(req.body);
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
     .then((user) => {
